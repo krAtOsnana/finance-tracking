@@ -30,6 +30,7 @@ A clean and modern expense tracking web app built with Next.js App Router, Mongo
 ```bash
 git clone https://github.com/krAtOsnana/finance-tracking.git
 cd finance-tracking
+cd personal-finance-tracker
 npm install
 ```
 

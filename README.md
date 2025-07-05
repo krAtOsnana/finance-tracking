@@ -31,3 +31,19 @@ A clean and modern expense tracking web app built with Next.js App Router, Mongo
 git clone https://github.com/krAtOsnana/finance-tracking.git
 cd finance-tracking
 npm install
+```
+
+⚙️ Setup
+Create a .env.local file:
+
+```bash
+MONGODB_URI=your_mongodb_connection_string
+```
+Run the app locally:
+
+```bash
+npm run dev
+```
+🔔 Toast Setup
+We use React Hot Toast for success and error messages.
+

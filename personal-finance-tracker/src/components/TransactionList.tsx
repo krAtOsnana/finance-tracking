@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Transaction } from '@/app/transactions/page';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 interface Props {
   transactions: Transaction[];
@@ -13,6 +14,7 @@ interface Props {
 export default function TransactionList({ transactions, onEdit, refresh }: Props) {
   const handleDelete = async (id: string) => {
     await axios.delete(`/api/transactions/${id}`);
+    toast("Transaction Deleted")
     refresh();
   };
 

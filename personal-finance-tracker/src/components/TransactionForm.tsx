@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils'; // If you use the cn utility for class merging
 import axios from 'axios';
 import { Transaction } from '@/app/transactions/page';
+import toast from 'react-hot-toast';
 
 interface Props {
   editingTx: Transaction | null;
@@ -45,8 +46,10 @@ export default function TransactionForm({ editingTx, clearEdit, refresh }: Props
     try {
       if (editingTx) {
         await axios.put(`/api/transactions/${editingTx._id}`, data);
+        toast("Transaction updated")
       } else {
         await axios.post('/api/transactions', data);
+        toast("Transaction Created")
       }
       setForm({ amount: '', date: '', description: '' });
       clearEdit();

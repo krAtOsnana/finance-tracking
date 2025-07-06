@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils'; // If you use the cn utility for class merging
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 import axios from 'axios';
 import { Transaction } from '@/app/transactions/page';
 import toast from 'react-hot-toast';
@@ -17,7 +18,12 @@ interface Props {
 }
 
 export default function TransactionForm({ editingTx, clearEdit, refresh }: Props) {
-  const [form, setForm] = useState({ amount: '', date: '', description: '' });
+  const [form, setForm] = useState({
+    amount: '',
+    date: '',
+    description: '',
+    category: '',
+  });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -26,9 +32,10 @@ export default function TransactionForm({ editingTx, clearEdit, refresh }: Props
         amount: editingTx.amount.toString(),
         date: editingTx.date.slice(0, 10),
         description: editingTx.description,
+        category: editingTx.category,
       });
     } else {
-      setForm({ amount: '', date: '', description: '' });
+      setForm({ amount: '', date: '', description: '', category: '' });
     }
   }, [editingTx]);
 
@@ -42,16 +49,17 @@ export default function TransactionForm({ editingTx, clearEdit, refresh }: Props
       amount: parseFloat(form.amount),
       date: new Date(form.date).toISOString(),
       description: form.description,
+      category: form.category,
     };
     try {
       if (editingTx) {
         await axios.put(`/api/transactions/${editingTx._id}`, data);
-        toast("Transaction updated")
+        toast.success('Transaction updated');
       } else {
         await axios.post('/api/transactions', data);
-        toast("Transaction Created")
+        toast.success('Transaction created');
       }
-      setForm({ amount: '', date: '', description: '' });
+      setForm({ amount: '', date: '', description: '', category: '' });
       clearEdit();
       refresh();
     } finally {
@@ -108,6 +116,22 @@ export default function TransactionForm({ editingTx, clearEdit, refresh }: Props
             {form.description.length}/80
           </div>
         </div>
+        <div className="space-y-2">
+          <Label className="text-base">Category</Label>
+          <Select value={form.category} onValueChange={(val) => setForm({ ...form, category: val })}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="food">Food</SelectItem>
+              <SelectItem value="rent">Rent</SelectItem>
+              <SelectItem value="utilities">Utilities</SelectItem>
+              <SelectItem value="salary">Salary</SelectItem>
+              <SelectItem value="shopping">Shopping</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardContent>
       <CardFooter className="flex gap-3 justify-end">
         {editingTx && (
@@ -122,7 +146,7 @@ export default function TransactionForm({ editingTx, clearEdit, refresh }: Props
         )}
         <Button
           onClick={handleSubmit}
-          disabled={loading || !form.amount || !form.date || !form.description}
+          disabled={loading || !form.amount || !form.date || !form.description || !form.category}
           className={cn(
             "transition-all",
             loading && "opacity-70 cursor-not-allowed"

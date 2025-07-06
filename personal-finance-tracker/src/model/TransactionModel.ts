@@ -4,6 +4,8 @@ export interface Transaction extends Document {
   amount: number;
   date: Date;
   description: string;
+  category: string;
+  
 }
 
 const TransactionSchema: Schema<Transaction> = new mongoose.Schema({
@@ -22,6 +24,13 @@ const TransactionSchema: Schema<Transaction> = new mongoose.Schema({
     minlength: [10, 'Description must be at least 10 characters'],
     maxlength: [300, 'Description must not exceed 300 characters'],
   },
+  category: {
+    type: String,
+    required: [true, 'Category is required'],
+    enum: ['food', 'rent', 'utilities', 'salary', 'shopping', 'other'], 
+    default: 'other',
+  },
+ 
 });
 
 const TransactionModel =

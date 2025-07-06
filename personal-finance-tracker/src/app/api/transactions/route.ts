@@ -6,9 +6,9 @@ export async function POST(req: NextRequest) {
   try {
     await dbConnect();
     const body = await req.json();
-    const { amount, date, description } = body;
+    const { amount, date, description, category } = body;
 
-    const transaction = await TransactionModel.create({ amount, date, description });
+    const transaction = await TransactionModel.create({ amount, date, description, category });
     return NextResponse.json({ success: true, transaction }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Failed to add transaction', error }, { status: 500 });

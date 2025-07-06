@@ -10,6 +10,7 @@ export interface Transaction {
   amount: number;
   date: string;
   description: string;
+  category: string;
 }
 
 export default function TransactionsPage() {
@@ -27,6 +28,12 @@ export default function TransactionsPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-8">
+
+       {/* Chart at the bottom, full width */}
+       <div>
+        <TransactionChart transactions={transactions} />
+      </div>
+      
       {/* Form and List Side-by-Side */}
       <div className="flex flex-col md:flex-row gap-6">
         <div className="md:w-1/3 w-full">
@@ -45,10 +52,7 @@ export default function TransactionsPage() {
         </div>
       </div>
 
-      {/* Chart at the bottom, full width */}
-      <div>
-        <TransactionChart transactions={transactions} />
-      </div>
+     
     </div>
   );
 }

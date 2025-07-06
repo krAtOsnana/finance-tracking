@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dialog, DialogContent, DialogHeader,  } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Transaction } from "@/app/transactions/page";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -15,9 +15,20 @@ interface Props {
   refresh: () => void;
 }
 
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F", "#FFBB28"];
+const COLORS = [
+  "#8884d8",
+  "#82ca9d",
+  "#ffc658",
+  "#ff8042",
+  "#00C49F",
+  "#FFBB28"
+];
 
-export default function TransactionList({ transactions, onEdit, refresh }: Props) {
+export default function TransactionList({
+  transactions,
+  onEdit,
+  refresh
+}: Props) {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
@@ -26,15 +37,18 @@ export default function TransactionList({ transactions, onEdit, refresh }: Props
     refresh();
   };
 
-  const grouped = transactions.reduce((acc: Record<string, Transaction[]>, tx) => {
-    const month = new Date(tx.date).toLocaleString("default", {
-      month: "long",
-      year: "numeric"
-    });
-    if (!acc[month]) acc[month] = [];
-    acc[month].push(tx);
-    return acc;
-  }, {});
+  const grouped = transactions.reduce(
+    (acc: Record<string, Transaction[]>, tx) => {
+      const month = new Date(tx.date).toLocaleString("default", {
+        month: "long",
+        year: "numeric"
+      });
+      if (!acc[month]) acc[month] = [];
+      acc[month].push(tx);
+      return acc;
+    },
+    {}
+  );
 
   const sortedMonths = Object.keys(grouped).sort((a, b) => {
     return (
@@ -56,7 +70,9 @@ export default function TransactionList({ transactions, onEdit, refresh }: Props
   return (
     <Card className="h-full shadow-lg border border-gray-200">
       <CardContent className="p-6 flex flex-col h-full">
-        <h2 className="text-2xl font-bold mb-6 tracking-tight text-primary">Transaction List</h2>
+        <h2 className="text-2xl font-bold mb-6 tracking-tight text-primary">
+          Transaction List
+        </h2>
         <ScrollArea className="h-80 pr-2">
           {sortedMonths.length === 0 ? (
             <div className="text-muted-foreground text-center py-8">
@@ -86,24 +102,40 @@ export default function TransactionList({ transactions, onEdit, refresh }: Props
                       >
                         {/* Left: Amount and Info */}
                         <div className="flex-1 flex flex-col md:flex-row md:items-center gap-4">
-                          <div className="font-semibold text-xl text-green-600 min-w-[90px]">₹{tx.amount}</div>
+                          <div className="font-semibold text-xl text-green-600 min-w-[90px]">
+                            ₹{tx.amount}
+                          </div>
                           <div className="flex-1">
-                            <div className="text-base font-medium">{tx.description}</div>
-                            <div className="text-xs text-gray-500">{new Date(tx.date).toDateString()}</div>
+                            <div className="text-base font-medium">
+                              {tx.description}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {new Date(tx.date).toDateString()}
+                            </div>
                             {tx.category && (
                               <div className="text-xs text-muted-foreground mt-1">
                                 <span className="font-semibold">Category:</span>{" "}
-                                <span className="capitalize">{tx.category}</span>
+                                <span className="capitalize">
+                                  {tx.category}
+                                </span>
                               </div>
                             )}
                           </div>
                         </div>
                         {/* Right: Actions */}
                         <div className="flex gap-2 justify-end">
-                          <Button variant="outline" size="sm" onClick={() => onEdit(tx)}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => onEdit(tx)}
+                          >
                             Edit
                           </Button>
-                          <Button variant="destructive" size="sm" onClick={() => handleDelete(tx._id)}>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleDelete(tx._id)}
+                          >
                             Delete
                           </Button>
                         </div>
@@ -118,11 +150,15 @@ export default function TransactionList({ transactions, onEdit, refresh }: Props
       </CardContent>
 
       {/* Pie Chart Modal */}
-      <Dialog open={!!selectedMonth} onOpenChange={(open) => !open && setSelectedMonth(null)}>
-      <DialogHeader>
-        <DialogTitle>Monthly Expence</DialogTitle>
-      </DialogHeader>
+      <Dialog
+        open={!!selectedMonth}
+        onOpenChange={(open) => !open && setSelectedMonth(null)}
+      >
         <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Monthly Expence</DialogTitle>
+          </DialogHeader>
+
           <h4 className="text-lg font-semibold mb-4 text-center">
             {selectedMonth} Expenses
           </h4>
@@ -136,9 +172,14 @@ export default function TransactionList({ transactions, onEdit, refresh }: Props
                 outerRadius={80}
                 label
               >
-                {(selectedMonth ? getPieData(selectedMonth) : []).map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
+                {(selectedMonth ? getPieData(selectedMonth) : []).map(
+                  (_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  )
+                )}
               </Pie>
               <Tooltip />
             </PieChart>

@@ -4,6 +4,7 @@ import axios from 'axios';
 import TransactionForm from '@/components/TransactionForm';
 import TransactionList from '@/components/TransactionList';
 import TransactionChart from '@/components/TransactionChart';
+import TransactionSummary from '@/components/TransactionSummary';
 
 export interface Transaction {
   _id: string;
@@ -29,10 +30,16 @@ export default function TransactionsPage() {
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-8">
 
+      {/* summary card */}
+      <div>
+        <TransactionSummary transactions={transactions}/>
+      </div>
+      
        {/* Chart at the bottom, full width */}
        <div>
         <TransactionChart transactions={transactions} />
       </div>
+
       
       {/* Form and List Side-by-Side */}
       <div className="flex flex-col md:flex-row gap-6">

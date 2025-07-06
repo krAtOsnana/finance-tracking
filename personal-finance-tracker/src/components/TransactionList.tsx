@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dialog, DialogContent,  } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader,  } from "@/components/ui/dialog";
 import { Transaction } from "@/app/transactions/page";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface Props {
   transactions: Transaction[];
@@ -118,6 +119,9 @@ export default function TransactionList({ transactions, onEdit, refresh }: Props
 
       {/* Pie Chart Modal */}
       <Dialog open={!!selectedMonth} onOpenChange={(open) => !open && setSelectedMonth(null)}>
+      <DialogHeader>
+        <DialogTitle>Monthly Expence</DialogTitle>
+      </DialogHeader>
         <DialogContent className="max-w-md">
           <h4 className="text-lg font-semibold mb-4 text-center">
             {selectedMonth} Expenses

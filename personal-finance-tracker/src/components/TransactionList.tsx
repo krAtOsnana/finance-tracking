@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent,  } from "@/components/ui/dialog";
 import { Transaction } from "@/app/transactions/page";
 import axios from "axios";
 import toast from "react-hot-toast";
